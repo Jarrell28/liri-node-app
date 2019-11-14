@@ -63,7 +63,32 @@ switch (command) {
         break;
 
     case "movie-this":
-        console.log("movie");
+        var movie = process.argv.slice(3).join(" ");
+        var movieURL = "http://www.omdbapi.com/?apikey=trilogy&type=movie&t=" + movie;
+
+        axios.get(movieURL).then(function (response) {
+
+            var movieData = response.data;
+
+            var title = movieData.Title;
+            var year = movieData.Year;
+            var imdbRating = movieData.imdbRating;
+            var rottenRating = movieData.Ratings.filter(rating => rating.Source === 'Rotten Tomatoes');
+            rottenRating.length ? rottenRating = rottenRating[0].Value : rottenRating = "No Rating Posted";
+            var country = movieData.Country;
+            var language = movieData.Language;
+            var plot = movieData.Plot;
+            var actors = movieData.Actors;
+
+            console.log("Title: " + title);
+            console.log("Year: " + year);
+            console.log("IMBD Rating: " + imdbRating);
+            console.log("Rotten Tomatoes Rating: " + rottenRating);
+            console.log("Country: " + country);
+            console.log("Language: " + language);
+            console.log("Plot: " + plot);
+            console.log("Actors: " + actors);
+        })
         break;
 
     case "do-what-it-says":
