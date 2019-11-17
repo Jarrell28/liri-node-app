@@ -1,6 +1,6 @@
 <h1>LIRI Bot</h1>
 
-This application provides information about songs, movies, and concerts. Instead of using different applications for each task, we combined it to do all tasks in one app!
+This is a CLI application that provides information about songs, movies, and concerts. Instead of using different applications for each task, we combined it to do all tasks in one app!
 
 This application has four commands that the user can enter: concert-this, spotify-this-song, movie-this and do-what-it-says.
 
