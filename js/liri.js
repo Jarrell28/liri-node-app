@@ -7,20 +7,12 @@ var moment = require("moment");
 var fs = require("fs");
 
 
-//Make it so liri.js can take in one of the following commands
-//concert-this
-//spotify-this-song
-//movie-this
-//do-what-it-says
-
-
 var command = process.argv[2];
 
 switch (command) {
     case "concert-this":
         var artist = process.argv.slice(3).join(" ");
         concertThis(artist);
-
         break;
 
     case "spotify-this-song":
@@ -46,6 +38,8 @@ function concertThis(artist) {
     axios.get(bandsUrl).then(function (response) {
         if (response.data.length) {
             var events = response.data;
+            console.log("Getting information for concerts...");
+            console.log("----------------------");
 
             events.forEach(function (event) {
                 console.log("Venue: " + event.venue.name);
@@ -62,24 +56,32 @@ function concertThis(artist) {
 }
 
 function spotifyThis(track) {
-    spotify.search({ type: 'track', query: track, limit: 1 }, function (err, data) {
+    spotify.search({ type: 'track', query: track, limit: 5 }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-        var trackData = data.tracks.items[0];
-        var song = trackData.name;
-        var songPreview = trackData.preview_url ? trackData.preview_url : "No available Link";
-        var album = trackData.album.name;
 
-        var artists = [];
-        trackData.artists.forEach(function (artist) {
-            artists.push(artist.name);
+        var trackData = data.tracks.items;
+        console.log("Getting information for songs...");
+        console.log("----------------------");
+        trackData.forEach(track => {
+            var song = track.name;
+            var songPreview = track.preview_url ? track.preview_url : "No available Link";
+            var album = track.album.name;
+
+            var artists = [];
+            track.artists.forEach(function (artist) {
+                artists.push(artist.name);
+            })
+            // console.log(trackData);
+            console.log("Artist(s): " + artists.join(","));
+            console.log("Song: " + song);
+            console.log("Preview Link: " + songPreview);
+            console.log("Album: " + album);
+            console.log("----------------------");
         })
-        // console.log(trackData);
-        console.log("Artist(s): " + artists.join(","));
-        console.log("Song: " + song);
-        console.log("Preview Link: " + songPreview);
-        console.log("Album: " + album);
+
+
 
     });
 }
@@ -88,7 +90,8 @@ function movieThis(movie) {
     var movieURL = "http://www.omdbapi.com/?apikey=trilogy&type=movie&t=" + movie;
 
     axios.get(movieURL).then(function (response) {
-
+        console.log("Getting information for movie...");
+        console.log("----------------------");
         var movieData = response.data;
 
         var title = movieData.Title;
